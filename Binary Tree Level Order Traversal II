@@ -1,0 +1,84 @@
+/*    107. Binary Tree Level Order Traversal II
+
+Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
+
+For example:
+Given binary tree [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its bottom-up level order traversal as:
+[
+  [15,7],
+  [9,20],
+  [3]
+]                               */
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        // Here is our List we'll return containing other lists
+        List<List<Integer>> listOfLevels = new ArrayList<>();
+        
+        // We only do work if our root is valid
+        if (root != null) {
+            // Queue q has all the nodes from one level in it at a time
+            // Queue nextQ has all the children from q
+            // listOfValues is where we'll store the values from the nodes in q
+            Queue<TreeNode> q = new LinkedList<>();
+            Queue<TreeNode> nextQ = new LinkedList<>();
+            List<Integer> listOfValues = new ArrayList<>();
+            q.add(root);
+
+            // Here we do a level order traversal, but we loop through each level to gather the values
+            // from that level
+            while (!q.isEmpty()) {
+                while (!q.isEmpty()) {
+                    TreeNode cur = q.remove();
+                    listOfValues.add(cur.val);
+
+                    if (cur.left != null) {
+                        nextQ.add(cur.left);
+                    }
+
+                    if (cur.right != null) {
+                        nextQ.add(cur.right);
+                    }
+                }
+                
+                // At this point we've finished traversing a level so we add our 
+                // list with values object to our list of levels object
+                listOfLevels.add(listOfValues);
+                // The next queue gets copied for our main queue
+                q = new LinkedList<>(nextQ);
+                // We then clear our next queue
+                nextQ.clear();
+                // make a new, empty list of values and get ready for the next level of the tree, if any
+                listOfValues = new ArrayList<>();
+            }
+        }
+        
+        // Reverse our list. We take O(n) times here
+        Collections.reverse(listOfLevels);
+        // Fin
+        return listOfLevels;        
+    }
+}
