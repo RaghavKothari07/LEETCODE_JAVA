@@ -1,0 +1,41 @@
+/*        172. Factorial Trailing Zeroes
+
+Given an integer n, return the number of trailing zeroes in n!.
+
+Follow up: Could you write a solution that works in logarithmic time complexity?
+
+ 
+
+Example 1:
+
+Input: n = 3
+Output: 0
+Explanation: 3! = 6, no trailing zero.
+Example 2:
+
+Input: n = 5
+Output: 1
+Explanation: 5! = 120, one trailing zero.
+Example 3:
+
+Input: n = 0
+Output: 0                  */
+
+
+class Solution {
+    public int trailingZeroes(int n) {
+// each interval of 10 has atleast 2 zeros, obe is 2*5 and 10 and second part add combination of 2 & 5 is n%10 is greater than 5
+int ans = (n/10)*2 + (n%10>=5 ? 1:0) ;
+
+// Here we are checking, how much multiples of 55 or 555 or 55*5 we have in the given number in order to check the extra appearance of 5 ;
+
+    int check = 5*5 ; 
+    
+    while(check<=n){
+        ans += n/check ;
+        check =check*5; 
+    }
+    
+    return ans;    
+    }
+}
