@@ -1,0 +1,79 @@
+/*     160. Intersection of Two Linked Lists
+
+Write a program to find the node at which the intersection of two singly linked lists begins.
+
+For example, the following two linked lists:
+
+
+begin to intersect at node c1.
+
+ 
+
+Example 1:
+
+
+Input: intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
+Output: Reference of the node with value = 8                                                      */
+
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        
+        ListNode tail = headA;
+        while (tail.next != null) {
+            tail = tail.next;
+        }
+        
+        tail.next = headA;
+        
+        ListNode ret = getCycleEntry(headB);
+        tail.next = null;
+        
+        return ret;
+    }
+    
+    private ListNode getCycleEntry(ListNode head) {
+        if (head.next == null) {
+            return null;
+        }
+
+        ListNode fr = head;
+        ListNode sr = head;
+        
+        while (fr != null && fr.next != null) {
+            sr = sr.next;
+            fr = fr.next.next;
+            
+            if (fr == sr) {
+                break;
+            }
+        }
+        
+        if (fr != sr) {
+            return null;
+        }
+        
+        ListNode sr2 = head;
+        while (sr != sr2) {
+            sr = sr.next;
+            sr2 = sr2.next;
+        }
+        
+        return sr;        
+    }
+}
