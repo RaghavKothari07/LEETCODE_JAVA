@@ -1,0 +1,52 @@
+/*    234. Palindrome Linked List
+
+Given a singly linked list, determine if it is a palindrome.
+
+Example 1:
+
+Input: 1->2
+Output: false
+Example 2:
+
+Input: 1->2->2->1
+Output: true                   */
+
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null) { // edge case
+        return true;
+    }
+    
+    ArrayList<Integer> intArray = new ArrayList<Integer>(); // make an arrayList of Integers because you don't know how long the linked list will be 
+    ListNode current = head; // "pointer" to the first node
+    while (current != null) { // iterate through linked list linearly and add each node's value to the arraylist
+        intArray.add(new Integer(current.val));
+        current = current.next;
+    }
+    int i = 0;
+    int j = intArray.size()-1;
+    System.out.println(j);
+    while (i < j) { // check if the opposite integers are equal to each other to see if it fulfills the criteria of "palindrome-ness"
+        int integer1 = intArray.get(i); // had to do unboxing since Integers are wrapper classes for the primitive data type "int"
+        int integer2 = intArray.get(j);
+        if (integer1 != integer2) {
+            return false;
+        }
+        i++;
+        j--;
+    }
+    return true;   
+    }
+}
