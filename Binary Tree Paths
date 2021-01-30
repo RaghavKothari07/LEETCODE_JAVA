@@ -1,0 +1,61 @@
+/*    257. Binary Tree Paths
+
+Given a binary tree, return all root-to-leaf paths.
+
+Note: A leaf is a node with no children.
+
+Example:
+
+Input:
+
+   1
+ /   \
+2     3
+ \
+  5
+
+Output: ["1->2->5", "1->3"]
+
+Explanation: All root-to-leaf paths are: 1->2->5, 1->3              */
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> m = new ArrayList<>();
+        binaryTreePaths(root, new StringBuilder(),m);
+        return m;
+        
+    }
+    
+    void binaryTreePaths(TreeNode root, StringBuilder current, List<String> m){
+        if(root==null) return;
+        if(root.left == null && root.right == null){
+            current.append(root.val);
+            m.add(current.toString());
+        }
+        else {
+            StringBuilder l = new StringBuilder(current);
+            l.append(root.val).append("->");
+            StringBuilder r = new StringBuilder(current);
+            r.append(root.val).append("->");
+            binaryTreePaths(root.left, l, m);
+            binaryTreePaths(root.right, r,m);
+        }   
+    }
+}
