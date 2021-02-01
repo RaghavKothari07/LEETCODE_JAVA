@@ -1,0 +1,71 @@
+/*    10. Regular Expression Matching
+
+Given an input string (s) and a pattern (p), implement regular expression matching with support for '.' and '*' where: 
+
+'.' Matches any single character.​​​​
+'*' Matches zero or more of the preceding element.
+The matching should cover the entire input string (not partial).
+
+ 
+
+Example 1:
+
+Input: s = "aa", p = "a"
+Output: false
+Explanation: "a" does not match the entire string "aa".            */
+
+
+
+class Solution {
+    public boolean isMatch(String s, String p) {
+        return checkPatternMatches(new boolean[s.length()][p.length()], new boolean[s.length()][p.length()], 0, 0, s, p);
+    }
+    
+    static boolean checkPatternMatches(boolean arrLog[][], boolean visited[][], int sIndex, int pIndex, String s, String p) {
+        if (pIndex == p.length()) {
+            if (sIndex == s.length()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (sIndex == s.length()) {
+            if (pIndex == p.length()) {
+                return true;
+            } else {
+                int curr = pIndex;
+                while(curr < p.length() && (p.charAt(curr) == '*' || ((curr + 1 < p.length()) && p.charAt(curr + 1) == '*'))) {
+                    curr++;
+                }
+                if (curr == p.length()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        if (!visited[sIndex][pIndex]) {
+            visited[sIndex][pIndex] = true;
+            // System.out.println(sIndex + " " + pIndex);
+            if ((pIndex + 1) < p.length() && p.charAt(pIndex + 1) == '*') {
+                char ch = p.charAt(pIndex);
+                int curr = sIndex;
+                boolean matched = false;
+                while(curr < s.length() && (ch == '.' || s.charAt(curr) == ch)) {
+                    matched = matched || (checkPatternMatches(arrLog, visited, curr + 1, pIndex + 2, s, p));
+                    curr++;
+                }
+                matched = matched || (checkPatternMatches(arrLog, visited, sIndex, pIndex + 2, s, p));
+                arrLog[sIndex][pIndex] = matched;
+            } else {
+                boolean matched = false;
+                if (p.charAt(pIndex) == '.' || (p.charAt(pIndex) == s.charAt(sIndex))) {
+                    matched = checkPatternMatches(arrLog, visited, sIndex + 1, pIndex + 1, s, p);
+                }
+                arrLog[sIndex][pIndex] = matched;
+            }
+            // System.out.println(sIndex + " " + pIndex + " " + arrLog[sIndex][pIndex]);
+        }
+        return arrLog[sIndex][pIndex];
+    }
+}
