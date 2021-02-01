@@ -1,0 +1,95 @@
+/*     24. Swap Nodes in Pairs
+
+Given a linked list, swap every two adjacent nodes and return its head.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4]
+Output: [2,1,4,3]
+Example 2:
+
+Input: head = []
+Output: []
+Example 3:
+
+Input: head = [1]
+Output: [1]                          */
+
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if(head == null || head.next == null) return head; 
+    
+    boolean isSwap = true;
+    
+    ListNode current = head;
+    ListNode prev = null;
+    
+    while(current.next != null){
+        
+        if(isSwap){
+            
+            if(prev == null){
+                
+                ListNode temp = current.next;
+            
+                current.next = temp.next;
+            
+                temp.next = current;
+                
+                head = temp;
+                
+                prev = temp;
+                
+                current = temp.next;
+                
+                isSwap = false;
+                
+                continue;
+                
+            }else {
+                
+                ListNode temp = current.next;
+            
+                current.next = temp.next;
+            
+                temp.next = current;
+             
+                prev.next = temp;
+                
+                prev = temp;
+                
+                current = prev.next;
+                
+                isSwap = false;
+                
+                continue;
+            }
+            
+        }
+        
+        prev = current;
+        current = current.next;
+        
+        isSwap = true;
+    }
+    
+    return head;
+    
+        
+    }
+}
