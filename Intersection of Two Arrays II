@@ -1,0 +1,53 @@
+/*      350. Intersection of Two Arrays II
+
+Given two arrays, write a function to compute their intersection.
+
+Example 1:
+
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2,2]
+Example 2:
+
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [4,9]                                      */
+
+
+
+class Solution {
+public int[] intersect(int[] nums1, int[] nums2) {
+
+    int firstArrayLength = nums1.length;    // -------------------->Say, size = 3
+    int secondArrayLength = nums2.length;   // -------------------->Say, Size = 2000
+
+    if(firstArrayLength > secondArrayLength){ 
+        return loopOverSmallerArray(nums2, nums1);
+    }
+    return loopOverSmallerArray(nums1, nums2);
+}
+
+public int[] loopOverSmallerArray(int[] smallerArray, int[] largerArray){
+
+    Map<Integer, Integer> firstArrayMap = new HashMap();
+    List<Integer> result = new ArrayList();
+
+    for(int i: largerArray){   // --------------------> loop 2000 times
+        int value = firstArrayMap.getOrDefault(i, 0);
+        firstArrayMap.put(i, value+1);
+    }
+
+    for(int j: smallerArray){  // --------------------> loop 3 times
+        if(firstArrayMap.get(j) != null && firstArrayMap.get(j) > 0){  // ----------> If check 3 times (If we coose larger array we had loop over 2000 times + if check 2000 times)
+            result.add(j);
+            firstArrayMap.put(j, firstArrayMap.get(j)-1);
+        }
+    }
+
+    int[] finalResult = new int[result.size()];
+    for(int i = 0; i < result.size(); i++)
+    {
+        finalResult[i] = result.get(i);
+    }
+
+    return finalResult;
+}
+}
