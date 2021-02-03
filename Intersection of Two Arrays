@@ -1,0 +1,28 @@
+/*    349. Intersection of Two Arrays
+
+Given two arrays, write a function to compute their intersection.
+
+Example 1:
+
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2]
+Example 2:
+
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [9,4]                                    */
+
+
+
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Map<Integer,Integer> map = new HashMap<>();
+        
+        Arrays.stream(nums1).forEach(e -> map.putIfAbsent(e,1));
+        
+        Arrays.stream(nums2).forEach(e -> {
+           map.computeIfPresent(e,(k,v) -> v + 1);
+        });
+        
+        return map.entrySet().stream().filter(e -> e.getValue() > 1).mapToInt(e -> e.getKey().intValue()).toArray();  
+    }
+}
