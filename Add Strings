@@ -1,0 +1,48 @@
+/*    415. Add Strings
+
+Given two non-negative integers num1 and num2 represented as string, return the sum of num1 and num2.
+
+Note:
+
+The length of both num1 and num2 is < 5100.
+Both num1 and num2 contains only digits 0-9.
+Both num1 and num2 does not contain any leading zero.
+You must not use any built-in BigInteger library or convert the inputs to integer directly.     */
+
+
+
+
+class Solution {
+    public String addStrings(String num1, String num2) {
+    StringBuffer sb = new StringBuffer();
+	// starting from the LSB
+    int i=num1.length()-1,j=num2.length()-1;
+    int carry =0;
+    int sum =0;
+    while(i>=0 || j>=0){
+	// assign carry to sum of the previous addition 
+        sum=carry;
+        if(i>=0){
+			// add the value of i th char to the sum
+            sum+=Character.getNumericValue(num1.charAt(i));
+       
+        }
+        if(j>=0){
+       // add the value of j th char to the sum
+            sum+=Character.getNumericValue(num2.charAt(j));
+      
+        }
+        
+       int res = sum%10;
+       
+        sb.append(res);
+        carry=sum/10;
+        i--;j--;
+    }
+    if(carry!=0){
+        sb.append(carry);
+    }
+    // reverse the String as we have appended all the numbers after addition in reverse order
+    return sb.reverse().toString();
+    }
+}
